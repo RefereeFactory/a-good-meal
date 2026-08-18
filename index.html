@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plate & Postcode — Find Your Next Favourite London Table</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --plum:#3a1f33;
+    --plum-deep:#2a1526;
+    --cream:#faf3e9;
+    --cream-2:#f3e7d6;
+    --gold:#c98b3c;
+    --gold-soft:#e0b878;
+    --rose:#a3466a;
+    --ink:#2a1526;
+    --muted:#6b5a63;
+    --line:#e4d4c2;
+    --gap:#b8322e;
+    --ok:#2e7d5b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.6;
+  }
+  h1,h2,h3{font-family:'Fraunces',serif;line-height:1.15;font-weight:600}
+  a{color:var(--rose)}
+
+  /* HERO */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(1200px 500px at 80% -10%, rgba(201,139,60,.35), transparent 60%),
+      linear-gradient(160deg,var(--plum),var(--plum-deep));
+    color:var(--cream);
+    padding:26px 22px 64px;
+    overflow:hidden;
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;max-width:1100px;margin:0 auto 40px;gap:12px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Fraunces',serif;font-size:1.25rem;font-weight:700}
+  .brand .dot{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--gold-soft),var(--gold));display:grid;place-items:center;font-size:18px}
+  .nav a.cta{background:var(--gold);color:var(--plum-deep);text-decoration:none;padding:10px 18px;border-radius:999px;font-weight:600;font-size:.9rem}
+  .hero-inner{max-width:1100px;margin:0 auto;display:grid;gap:40px;grid-template-columns:1fr}
+  .hero-copy h1{font-size:clamp(2.2rem,6vw,3.7rem);letter-spacing:-.5px}
+  .hero-copy h1 .accent{color:var(--gold-soft);font-style:italic}
+  .hero-copy p.lede{font-size:1.12rem;color:#eaddd0;max-width:34ch;margin-top:18px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .pill{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);padding:6px 14px;border-radius:999px;font-size:.82rem}
+  .trust{margin-top:26px;font-size:.85rem;color:#d8c6b8;display:flex;align-items:center;gap:8px}
+
+  /* FORM CARD */
+  .finder{
+    background:var(--cream);
+    color:var(--ink);
+    border-radius:22px;
+    padding:26px 22px;
+    box-shadow:0 24px 60px -24px rgba(0,0,0,.5);
+    max-width:520px;
+    width:100%;
+  }
+  .finder h2{font-size:1.45rem;margin-bottom:4px}
+  .finder .sub{color:var(--muted);font-size:.92rem;margin-bottom:20px}
+  .field{margin-bottom:18px}
+  label{display:block;font-weight:600;font-size:.9rem;margin-bottom:7px}
+  .hint{font-weight:400;color:var(--muted);font-size:.82rem}
+  input[type=text],input[type=email],input[type=tel],select{
+    width:100%;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;
+    font-family:inherit;font-size:1rem;background:#fff;color:var(--ink);
+  }
+  input:focus,select:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,139,60,.2)}
+  .cuisines{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{
+    border:1.5px solid var(--line);background:#fff;border-radius:999px;
+    padding:9px 15px;font-size:.88rem;cursor:pointer;font-family:inherit;color:var(--ink);
+    transition:.15s;min-height:40px;
+  }
+  .chip:hover{border-color:var(--gold-soft)}
+  .chip[aria-pressed="true"]{background:var(--plum);color:var(--cream);border-color:var(--plum)}
+  .radius-row{display:flex;align-items:center;gap:14px}
+  input[type=range]{flex:1;accent-color:var(--gold)}
+  .radius-val{font-weight:600;min-width:64px;text-align:right}
+  .submit{
+    width:100%;padding:15px;border:none;border-radius:12px;background:var(--gold);
+    color:var(--plum-deep);font-weight:700;font-size:1.05rem;cursor:pointer;font-family:inherit;
+    min-height:52px;transition:.15s;
+  }
+  .submit:hover{background:var(--gold-soft)}
+  .submit:disabled{opacity:.6;cursor:default}
+  .privacy{font-size:.78rem;color:var(--muted);margin-top:12px;text-align:center}
+  .err{color:var(--gap);font-size:.82rem;margin-top:6px;display:none}
+  .err.show{display:block}
+  .status{font-size:.82rem;color:var(--ok);margin-top:10px;text-align:center;min-height:1.1em}
+
+  /* SECTIONS */
+  section.band{max-width:1100px;margin:0 auto;padding:70px 22px}
+  .section-head{text-align:center;max-width:640px;margin:0 auto 44px}
+  .section-head .eyebrow{color:var(--gold);font-weight:600;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem}
+  .section-head h2{font-size:clamp(1.7rem,4vw,2.5rem);margin:10px 0}
+  .section-head p{color:var(--muted)}
+  .grid3{display:grid;gap:22px;grid-template-columns:1fr}
+  .card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:26px 24px}
+  .card .ic{width:48px;height:48px;border-radius:12px;background:var(--cream-2);display:grid;place-items:center;font-size:24px;margin-bottom:14px}
+  .card h3{font-size:1.2rem;margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.94rem}
+
+  /* CUISINE STRIP */
+  .taste{background:linear-gradient(160deg,var(--plum),var(--plum-deep));color:var(--cream)}
+  .taste .section-head p{color:#d8c6b8}
+  .taste-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:760px;margin:0 auto}
+  .taste-item{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:18px;display:flex;gap:12px;align-items:center}
+  .taste-item .em{font-size:1.7rem}
+  .taste-item strong{display:block;font-family:'Fraunces',serif;font-size:1.05rem}
+  .taste-item span{font-size:.82rem;color:#d0bdad}
+
+  /* HOW */
+  .how ol{list-style:none;counter-reset:s;display:grid;gap:16px;max-width:640px;margin:0 auto}
+  .how li{counter-increment:s;display:flex;gap:16px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+  .how li::before{content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--plum);color:var(--cream);display:grid;place-items:center;font-weight:700;font-family:'Fraunces',serif}
+  .how li p{color:var(--muted);font-size:.92rem}
+  .how li strong{display:block;color:var(--ink);font-family:'Fraunces',serif;font-size:1.02rem}
+
+  footer{background:var(--plum-deep);color:#d8c6b8;padding:46px 22px;text-align:center}
+  footer .brand{justify-content:center;color:var(--cream);margin-bottom:14px}
+  footer .gap{margin:6px 0}
+
+  .gapfill{
+    display:inline-block;border:1.5px dashed var(--gap);color:var(--gap);
+    background:#fceceb;padding:2px 8px;border-radius:6px;font-size:.85rem;font-weight:600;
+  }
+
+  @media(min-width:820px){
+    .hero-inner{grid-template-columns:1.05fr .95fr;align-items:center;gap:56px}
+    .grid3{grid-template-columns:repeat(3,1fr)}
+    .hero{padding-bottom:80px}
+  }
+</style>
+<script id="factory-store-sdk">
+window.factory=(function(){
+var K="ec7e29b5-a782-4f21-8165-255dbb96d42e",U="https://canvbkibjgcnqowjtarf.supabase.co/functions/v1/app-market",A="sb_publishable_sMTQKIeFgT1vwjHnU7Gexg_8CCmhtxs";
+function call(b){b.appKey=K;return fetch(U,{method:"POST",headers:{"Content-Type":"application/json","Authorization":"Bearer "+A},body:JSON.stringify(b)}).then(function(r){return r.json().then(function(d){if(!r.ok)throw new Error(d.error||("store "+r.status));return d;});});}
+var S={
+put:function(c,i,d){return call({op:"put",collection:c,id:String(i),data:d}).then(function(x){return x.doc?x.doc.data:null;});},
+get:function(c,i){return call({op:"get",collection:c,id:String(i)}).then(function(x){return x.doc?x.doc.data:null;});},
+list:function(c){return call({op:"list",collection:c}).then(function(x){return x.docs.map(function(d){return d.data;});});},
+remove:function(c,i){return call({op:"delete",collection:c,id:String(i)}).then(function(){return true;});},
+unlock:function(code){return call({op:"redeem",code:String(code)}).then(function(x){try{localStorage.setItem("factory_access",x.status);}catch(e){}return x.status;});},
+access:function(){try{return localStorage.getItem("factory_access")||"none";}catch(e){return "none";}}
+};
+var _c=null;try{var h=(location.hash||"").match(/factory_code=([a-z0-9-]+)/i);_c=h?h[1]:localStorage.getItem("factory_code");if(h){history.replaceState(null,"",location.pathname+location.search);}}catch(e){}
+var F={put:S.put,get:S.get,list:S.list,remove:S.remove,unlock:S.unlock,access:S.access};
+F.ready=_c?S.unlock(_c).then(function(s){try{if(s!=="invalid")localStorage.setItem("factory_code",_c);}catch(e){}return s;}).catch(function(){return S.access();}):Promise.resolve(S.access());
+return F;})();
+</script>
+</head>
+<body>
+
+<header class="hero">
+  <nav class="nav">
+    <div class="brand"><span class="dot">🍽️</span> Plate &amp; Postcode</div>
+    <a class="cta" href="#finder">Find a table</a>
+  </nav>
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <h1>Your next favourite meal is <span class="accent">just around the corner.</span></h1>
+      <p class="lede">Tell us your London postcode and the food you're craving. We hand-pick delicious places within three miles and send them straight to you.</p>
+      <div class="pills">
+        <span class="pill">📍 Postcode-based</span>
+        <span class="pill">🚶 3-mile radius, max</span>
+        <span class="pill">💌 Personal picks by email</span>
+      </div>
+      <p class="trust">✨ Made in London, with love for every kind of appetite.</p>
+    </div>
+
+    <form class="finder" id="finder" novalidate>
+      <h2>Find restaurants near you</h2>
+      <p class="sub">Two quick details and your taste — we'll do the searching.</p>
+
+      <div class="field">
+        <label for="postcode">London postcode <span class="hint">e.g. SW1A 1AA</span></label>
+        <input type="text" id="postcode" name="postcode" autocomplete="postal-code" placeholder="Enter your postcode" required>
+        <div class="err" id="err-postcode">Please enter a valid UK postcode.</div>
+      </div>
+
+      <div class="field">
+        <label>What are you in the mood for? <span class="hint">pick one or more</span></label>
+        <div class="cuisines" id="cuisines" role="group" aria-label="Cuisine types">
+          <button type="button" class="chip" aria-pressed="false">Italian</button>
+          <button type="button" class="chip" aria-pressed="false">Indian</button>
+          <button type="button" class="chip" aria-pressed="false">Japanese</button>
+          <button type="button" class="chip" aria-pressed="false">Turkish</button>
+          <button type="button" class="chip" aria-pressed="false">Vegan &amp; Veggie</button>
+          <button type="button" class="chip" aria-pressed="false">Caribbean</button>
+          <button type="button" class="chip" aria-pressed="false">Thai</button>
+          <button type="button" class="chip" aria-pressed="false">Middle Eastern</button>
+          <button type="button" class="chip" aria-pressed="false">Brunch &amp; Café</button>
+          <button type="button" class="chip" aria-pressed="false">Surprise me</button>
+        </div>
+        <div class="err" id="err-cuisine">Please choose at least one taste.</div>
+      </div>
+
+      <div class="field">
+        <label for="radius">Search radius</label>
+        <div class="radius-row">
+          <input type="range" id="radius" min="0.5" max="3" step="0.5" value="2">
+          <span class="radius-val" id="radiusVal">2 miles</span>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="email">Email address</label>
+        <input type="email" id="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+        <div class="err" id="err-email">Please enter a valid email address.</div>
+      </div>
+
+      <div class="field">
+        <label for="phone">Phone number</label>
+        <input type="tel" id="phone" name="phone" autocomplete="tel" placeholder="Your mobile number" required>
+        <div class="err" id="err-phone">Please enter your phone number.</div>
+      </div>
+
+      <button type="submit" class="submit" id="submitBtn">Send me my restaurant picks</button>
+      <p class="privacy">We only use your email and phone to send your picks and, with your welcome, handy new tools like this one. No spam, ever.</p>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</header>
+
+<section class="band">
+  <div class="section-head">
+    <span class="eyebrow">Why people love it</span>
+    <h2>Less scrolling. More savouring.</h2>
+    <p>No endless review pages. Just thoughtful, nearby recommendations matched to what you actually feel like eating.</p>
+  </div>
+  <div class="grid3">
+    <div class="card">
+      <div class="ic" aria-hidden="true">📍</div>
+      <h3>Truly local</h3>
+      <p>We search from your exact postcode outward — up to a gentle three-mile walk or hop away, never further.</p>
+    </div>
+    <div class="card">
+      <div class="ic" aria-hidden="true">🎯</div>
+      <h3>Matched to your mood</h3>
+      <p>Craving comforting curry or a bright vegan bowl? Tell us the vibe and we tune every pick to your taste.</p>
+    </div>
+    <div class="card">
+      <div class="ic" aria-hidden="true">💌</div>
+      <h3>Delivered to you</h3>
+      <p>Your shortlist lands in your inbox, ready whenever hunger strikes — and future tools arrive the same warm way.</p>
+    </div>
+  </div>
+</section>
+
+<section class="band taste">
+  <div class="section-head">
+    <span class="eyebrow">A world on your doorstep</span>
+    <h2>Every kind of table, welcome</h2>
+    <p>London's kitchens speak every language. Whatever you fancy, there's a warm seat waiting.</p>
+  </div>
+  <div class="taste-grid">
+    <div class="taste-item"><span class="em" aria-hidden="true">🍝</span><div><strong>Comfort classics</strong><span>Italian, pizza, hearty pasta</span></div></div>
+    <div class="taste-item"><span class="em" aria-hidden="true">🍛</span><div><strong>Spice &amp; warmth</strong><span>Indian, Thai, Middle Eastern</span></div></div>
+    <div class="taste-item"><span class="em" aria-hidden="true">🥢</span><div><strong>Fresh &amp; light</strong><span>Japanese, sushi, poke</span></div></div>
+    <div class="taste-item"><span class="em" aria-hidden="true">🌱</span><div><strong>Plant-forward</strong><span>Vegan, veggie, wholesome bowls</span></div></div>
+    <div class="taste-item"><span class="em" aria-hidden="true">🫓</span><div><strong>Grill &amp; mezze</strong><span>Turkish, Lebanese, kebab</span></div></div>
+    <div class="taste-item"><span class="em" aria-hidden="true">🥞</span><div><strong>Slow mornings</strong><span>Brunch, café, coffee</span></div></div>
+  </div>
+</section>
+
+<section class="band how">
+  <div class="section-head">
+    <span class="eyebrow">How it works</span>
+    <h2>From craving to table in three steps</h2>
+  </div>
+  <ol>
+    <li><div><strong>Tell us where and what</strong><p>Enter your London postcode, choose your cuisines, and set how far you're happy to travel — up to three miles.</p></div></li>
+    <li><div><strong>We match &amp; curate</strong><p>Your request is saved securely and our team hand-picks restaurants near you that fit your taste and radius.</p></div></li>
+    <li><div><strong>Your picks arrive</strong><p>We send your personalised shortlist to your email and keep you first in line for new food-finding tools we build.</p></div></li>
+  </ol>
+</section>
+
+<footer>
+  <div class="brand"><span class="dot">🍽️</span> Plate &amp; Postcode</div>
+  <p>Helping Londoners find their next favourite meal, three miles at a time.</p>
+  <p class="gap">Questions? <span class="gapfill">[ADD YOUR CONTACT EMAIL]</span></p>
+  <p style="margin-top:14px;font-size:.8rem;opacity:.7">© <span id="yr"></span> Plate &amp; Postcode. Made in London with care.</p>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  // Cuisine chips
+  const selected = new Set();
+  document.querySelectorAll('#cuisines .chip').forEach(chip=>{
+    chip.addEventListener('click',()=>{
+      const on = chip.getAttribute('aria-pressed')==='true';
+      chip.setAttribute('aria-pressed', String(!on));
+      const label = chip.textContent.trim();
+      if(on) selected.delete(label); else selected.add(label);
+      document.getElementById('err-cuisine').classList.remove('show');
+    });
+  });
+
+  // Radius
+  const radius = document.getElementById('radius');
+  const radiusVal = document.getElementById('radiusVal');
+  const fmt = v => (v==='1'||v==='1.0') ? '1 mile' : v+' miles';
+  radius.addEventListener('input',()=> radiusVal.textContent = fmt(radius.value));
+
+  const ukPostcode = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i;
+
+  const form = document.getElementById('finder');
+  const statusEl = document.getElementById('status');
+  const btn = document.getElementById('submitBtn');
+
+  function showErr(id, show){ document.getElementById(id).classList.toggle('show', show); }
+
+  form.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    const postcode = document.getElementById('postcode').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    let ok = true;
+    const pcOK = ukPostcode.test(postcode); showErr('err-postcode', !pcOK); if(!pcOK) ok=false;
+    const cuOK = selected.size>0; showErr('err-cuisine', !cuOK); if(!cuOK) ok=false;
+    const emOK = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email); showErr('err-email', !emOK); if(!emOK) ok=false;
+    const phOK = phone.replace(/[^\d]/g,'').length>=7; showErr('err-phone', !phOK); if(!phOK) ok=false;
+
+    if(!ok){ statusEl.style.color='var(--gap)'; statusEl.textContent='Please check the highlighted fields.'; return; }
+
+    btn.disabled = true;
+    statusEl.style.color='var(--muted)';
+    statusEl.textContent = 'Saving your request…';
+
+    const id = String(Date.now());
+    const doc = {
+      postcode: postcode.toUpperCase(),
+      cuisines: Array.from(selected),
+      radiusMiles: Number(radius.value),
+      email, phone,
+      createdAt: new Date().toISOString()
+    };
+
+    try{
+      if(window.factory && factory.put){
+        await factory.put('requests', id, doc);
+      } else {
+        // speed cache fallback if factory not yet wired in preview
+        localStorage.setItem('req-'+id, JSON.stringify(doc));
+      }
+      statusEl.style.color='var(--ok)';
+      statusEl.textContent = '✓ Saved! Your ' + doc.cuisines.length + '-taste shortlist within ' + fmt(String(doc.radiusMiles)) + ' is on its way to ' + email + '.';
+      form.reset();
+      selected.clear();
+      document.querySelectorAll('#cuisines .chip').forEach(c=>c.setAttribute('aria-pressed','false'));
+      radiusVal.textContent = '2 miles';
+    }catch(err){
+      statusEl.style.color='var(--gap)';
+      statusEl.textContent = 'Something went wrong saving your request. Please try again in a moment.';
+    }finally{
+      btn.disabled = false;
+    }
+  });
+</script>
+<div id="factory-provenance" style="padding:14px 16px;text-align:center;font:11px/1.7 system-ui,sans-serif;color:#888;opacity:.85;">&#9874; Built with <a href="https://factory-the-factory-ui.netlify.app" style="color:#888;">The Factory</a> using third-party AI tools &#183; the app owner is responsible for its content &#183; Standard: UK law, aligned with the UN Universal Declaration of Human Rights &#183; <a href="https://factory-the-factory-ui.netlify.app/terms.html" style="color:#888;">Terms</a></div>
+</body>
+</html>
